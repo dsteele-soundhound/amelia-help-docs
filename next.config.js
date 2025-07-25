@@ -5,7 +5,6 @@ const path = require('path');
 const nextConfig = {
   pageExtensions: ['md', 'mdoc', 'js', 'jsx', 'ts', 'tsx'],
   assetPrefix: '/docs-assets',
-  basePath: '/docs',
   turbopack: {
       resolveExtensions: ['.md', '.mdoc', '.mdx', '.tsx', '.ts', '.jsx', '.js', '.json'],
       resolveAlias: {
