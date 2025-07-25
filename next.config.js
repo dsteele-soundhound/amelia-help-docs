@@ -4,7 +4,7 @@ const path = require('path');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['md', 'mdoc', 'js', 'jsx', 'ts', 'tsx'],
-  // assetPrefix: '/docs-assets', // Temporarily disabled for testing
+  assetPrefix: '/docs-assets',
   turbopack: {
       resolveExtensions: ['.md', '.mdoc', '.mdx', '.tsx', '.ts', '.jsx', '.js', '.json'],
       resolveAlias: {
