@@ -1,0 +1,221 @@
+# Connections Management
+
+## Introduction
+
+The Connections module provides connectivity to databases and other resources. To use this feature, you must understand how to configure the connections.
+
+See the [Connections Introduction](E02-04_0002-Connection-Mod-Intro.md) topic for a high-level introduction to Connections.
+
+## Access the Connections Workspace
+
+{% include from="E02-04_0002-ConnectionsAccess.md" element-id="E02-04_0002-ConnectionsAccess_snippet" /%}
+
+## What You'll Learn
+
+In this topic you'll learn about:
+
+* [The Connections workspaces].
+* [Adding Connections].
+* [Searching for Connections].
+* [Editing Connections](#Edit).
+* [Deleting Connections](#Delete).
+* [Cloning Connections](#Clone).
+* [Connecting to Connections](#Connect).
+
+## The Connections Workspaces {% #The %}
+
+The Connections feature includes several workspaces:
+
+* A default workspace that lists all available Connections with tools to search, create, and export individual Connections.
+
+* A right side panel that displays details about a specific connection.
+
+### The Connections List Workspace
+
+The first workspace you'll see is the list of Connections. These are filtered by Name and by any search terms. This includes tools to create new Connections and edit, clone, view, and delete Connections.
+
+![E02-04_0002-Connection-BothPanels](E02-04_0002-Connection-BothPanels.png){width="900"}
+*Connections List Workspace*
+
+|                                           Element                                            |                                                                                                Description                                                                                                 |
+|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| + / + New Connections                                                | Click the + New connection button or the + button to open a new tab workspace. The + button appears if the right panel displays.                                                                           |
+| Search                                                                                       | Click then type a search term to filter Connections by Name. This feature is case sensitive.                                                                                                               |
+| ![Gear-Btn-Automations_Browser](Gear-Btn-Automations_Browser.png){width="25" style="inline"} | To display options, hover over the far right edge of any item in the list of connections. A gear icon displays with options. Then click an option to View, Edit, Delete, Connect, or Clone the connection. |
+
+### The Connections Panel
+
+This panel gives you a wide range of options to connect with databases and other resources. Autonomics features use these connections to monitor, diagnose, and perform other tasks.
+
+![E02-04_0002-Connection-Panel](E02-04_0002-Connection-Panel.png){width="600"}
+*The Connections Panel*
+
+The connection type you select determines the settings to configure. The Credentials Source setting also has options independent of the connection type. Based on what you need to connect, click the links below to learn about individual settings.
+
+<chapter title="Database Connections" collapsible="true" level="5">
+
+|          Element          |                                                                                          Description                                                                                          |
+|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Connection Name           | {% include from="E02-04_0004-ConnectionsName.md" element-id="E02-04_0004-ConnectionsName_snippet" /%}                                                                                    |
+| Client                    | {% include from="E02-04_0004-ConnectionsClient.md" element-id="E02-04_0004-ConnectionsClient_snippet" /%}                                                                                |
+| Execution Group           | {% include from="E02-04_0004-ConnectionsExecGroup.md" element-id="E02-04_0004-ConnectionsExecGroup_snippet" /%}                                                                          |
+| Connection Type           | {% include from="E02-04_0004-ConnectionsType.md" element-id="E02-04_0004-ConnectionsType_snippet" /%} * **DB2**: * **MSSQL**: * **MySQL**: * **Oracle**: * **Postgres**: * **TERADATA**: |
+| Credentials Source        | See the Credentials Source Settings link below for details about this setting.                                                                                                                |
+| Username                  | See the Credentials Source table below with their related settings.                                                                                                                           |
+| Host                      | {% include from="E02-04_0004-ConnectionsHost.md" element-id="E02-04_0004-ConnectionsHost_snippet" /%}                                                                                    |
+| Port                      | {% include from="E02-04_0004-ConnectionsPort.md" element-id="E02-04_0004-ConnectionsPort_snippet" /%}                                                                                    |
+| Additional Parameters     | {% include from="E02-04_0004-ConnectionsAddtlParams.md" element-id="E02-04_0004-ConnectionsAddtlParams_snippet" /%}                                                                      |
+| User Switch               | {% include from="E02-04_0004-ConnectionsUserSwitch.md" element-id="E02-04_0004-ConnectionsUserSwitch_snippet" /%}                                                                        |
+| Credentials               | {% include from="E02-04_0004-ConnectionsUserCreds.md" element-id="E02-04_0004-ConnectionsUserCreds_snippet" /%}                                                                          |
+| Idle Threshold            | {% include from="E02-04_0004-ConnectionsIdleThresh.md" element-id="E02-04_0004-ConnectionsIdleThresh_snippet" /%}                                                                        |
+| Server Keep Alive         | {% include from="E02-04_0004-ConnectionsServerKeepAlive.md" element-id="E02-04_0004-ConnectionsServerKeepAlive_snippet" /%}                                                              |
+| Multiline Command Handler | {% include from="E02-04_0004-ConnectionsMultilineCmd.md" element-id="E02-04_0004-ConnectionsMultilineCmd_snippet" /%}                                                                    |
+| Tags                      | {% include from="E02-04_0004-ConnectionsTags.md" element-id="E02-04_0004-ConnectionsTags_snippet" /%}                                                                                    |
+| **Proxy Hops**                                                                                                                                                                                                           ||
+| + Add Hop                 | {% include from="E02-04_0004-ConnectionsProxyAdd.md" element-id="E02-04_0004-ConnectionsProxyAdd_snippet" /%}                                                                            |
+| + Copy from Existing      | {% include from="E02-04_0004-ConnectionsProxyCopy.md" element-id="E02-04_0004-ConnectionsProxyCopy_snippet" /%}                                                                          |
+
+</chapter> 
+
+<chapter title="PowerBroker" collapsible="true" level="5">
+
+| Element                   | Description                                                                                                                      |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| Connection Name           | {% include from="E02-04_0004-ConnectionsName.md" element-id="E02-04_0004-ConnectionsName_snippet" /%}                       |
+| Client                    | {% include from="E02-04_0004-ConnectionsClient.md" element-id="E02-04_0004-ConnectionsClient_snippet" /%}                   |
+| Execution Group           | {% include from="E02-04_0004-ConnectionsExecGroup.md" element-id="E02-04_0004-ConnectionsExecGroup_snippet" /%}             |
+| Connection Type           | {% include from="E02-04_0004-ConnectionsType.md" element-id="E02-04_0004-ConnectionsType_snippet" /%} * **PowerBroker**:    |
+| Credentials Source        | See the Credentials Source Settings link below for details about this setting.                                                   |
+| User Switch               | {% include from="E02-04_0004-ConnectionsUserSwitch.md" element-id="E02-04_0004-ConnectionsUserSwitch_snippet" /%}           |
+| Credentials               | {% include from="E02-04_0004-ConnectionsUserCreds.md" element-id="E02-04_0004-ConnectionsUserCreds_snippet" /%}             |
+| Idle Threshold            | {% include from="E02-04_0004-ConnectionsIdleThresh.md" element-id="E02-04_0004-ConnectionsIdleThresh_snippet" /%}           |
+| Server Keep Alive         | {% include from="E02-04_0004-ConnectionsServerKeepAlive.md" element-id="E02-04_0004-ConnectionsServerKeepAlive_snippet" /%} |
+| Multiline Command Handler | {% include from="E02-04_0004-ConnectionsMultilineCmd.md" element-id="E02-04_0004-ConnectionsMultilineCmd_snippet" /%}       |
+| Tags                      | {% include from="E02-04_0004-ConnectionsTags.md" element-id="E02-04_0004-ConnectionsTags_snippet" /%}                       |
+| **Proxy Hops**            |                                                                                                                                  |
+| + Add Hop                 | {% include from="E02-04_0004-ConnectionsProxyAdd.md" element-id="E02-04_0004-ConnectionsProxyAdd_snippet" /%}               |
+| + Copy from Existing      | {% include from="E02-04_0004-ConnectionsProxyCopy.md" element-id="E02-04_0004-ConnectionsProxyCopy_snippet" /%}             |
+
+</chapter>
+
+<chapter title="PowerShell, PowerShell Over SSH, SSH, Telnet" collapsible="true" level="5">
+
+|              Element               |               Connection Type                |                                                                                  Description                                                                                   |
+|------------------------------------|----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Connection Name                    |                                              | {% include from="E02-04_0004-ConnectionsName.md" element-id="E02-04_0004-ConnectionsName_snippet" /%}                                                                     |
+| Client                             |                                              | {% include from="E02-04_0004-ConnectionsClient.md" element-id="E02-04_0004-ConnectionsClient_snippet" /%}                                                                 |
+| Execution Group                    |                                              | {% include from="E02-04_0004-ConnectionsExecGroup.md" element-id="E02-04_0004-ConnectionsExecGroup_snippet" /%}                                                           |
+| Connection Type                    |                                              | {% include from="E02-04_0004-ConnectionsType.md" element-id="E02-04_0004-ConnectionsType_snippet" /%} * **PowerShell**: * **PowerShellOverSSH**: * **SSH**: * **Telnet**: |
+| Credentials Source                 |                                              | See the Credentials Source Settings link below for details about this setting.                                                                                                 |
+| Host                               |                                              | {% include from="E02-04_0004-ConnectionsHost.md" element-id="E02-04_0004-ConnectionsHost_snippet" /%}                                                                     |
+| Port                               |                                              | {% include from="E02-04_0004-ConnectionsPort.md" element-id="E02-04_0004-ConnectionsPort_snippet" /%}                                                                     |
+| Additional Parameters              |                                              | {% include from="E02-04_0004-ConnectionsAddtlParams.md" element-id="E02-04_0004-ConnectionsAddtlParams_snippet" /%}                                                       |
+| Connection Prompt Regex            | PowerShell Over SSH, SSH                     | If needed, type the regular expression to use as a connection prompt.                                                                                                          |
+| Disable Set Trap                   | SSH                                          | Select if you want to disable any traps set during an SSH session.                                                                                                             |
+| Terminal Type                      | SSH                                          | Select the type of terminal to use for an SSH session. Options are VT102 and Dumb.                                                                                             |
+| Device Type                        | SSH                                          | Select the device type to use for an SSH session.                                                                                                                              |
+| Non Interactive                    | PowerShell, PowerShell Over SSH, SSH, Telnet | Select whether to session should be non-interactive.                                                                                                                           |
+| Remove Blank Lines from Output     | PowerShell, PowerShell Over SSH, SSH, Telnet | Select whether to remove blank lines from session output.                                                                                                                      |
+| Delay After Prompt Detected        | PowerShell Over SSH, SSH                     | Select how long to delay after a prompt is detected during a session.                                                                                                          |
+| Use Custom Prompt                  | PowerShell, PowerShell Over SSH, SSH         | Select whether to use a custom prompt during a session.                                                                                                                        |
+| Protocol                           | PowerShell                                   | Select which protocol to use during a session. Options are HTTPS, CREDSSP, and HTTP.                                                                                           |
+| IPwinrm URL                        | PowerShell                                   | If needed, type the IPwinrm URL to use during a session.                                                                                                                       |
+| Configuration Name                 | PowerShell                                   | Type a configuration name to use during a session.                                                                                                                             |
+| Local                              | PowerShell Over SSH                          | Select whether to use local mode during a session.                                                                                                                             |
+| SSH Host                           | PowerShell Over SSH                          | Type the SSH host name to use during a session.                                                                                                                                |
+| SSH Port                           | PowerShell Over SSH                          | Type the SSH port number to use during a session.                                                                                                                              |
+| SSH Username                       | PowerShell Over SSH                          | Type a username toauthenticate a session.                                                                                                                                      |
+| SSH Password                       | PowerShell Over SSH                          | Type a password to authenticate a session.                                                                                                                                     |
+| User Switch                        |                                              | {% include from="E02-04_0004-ConnectionsUserSwitch.md" element-id="E02-04_0004-ConnectionsUserSwitch_snippet" /%}                                                         |
+| Credentials                        |                                              | {% include from="E02-04_0004-ConnectionsUserCreds.md" element-id="E02-04_0004-ConnectionsUserCreds_snippet" /%}                                                           |
+| Method                             | SSH                                          | For SSH connections, if the User Switch setting is selected, choose the method for any user switch.                                                                            |
+| Use base64 in non-interactive mode | SSH                                          | For SSH connections, if the User Switch setting is selected, choose whether or not to use a base64 non-interactive mode for the user switch.                                   |
+| Idle Threshold                     |                                              | {% include from="E02-04_0004-ConnectionsIdleThresh.md" element-id="E02-04_0004-ConnectionsIdleThresh_snippet" /%}                                                         |
+| Server Keep Alive                  |                                              | {% include from="E02-04_0004-ConnectionsServerKeepAlive.md" element-id="E02-04_0004-ConnectionsServerKeepAlive_snippet" /%}                                               |
+| Multiline Command Handler          |                                              | {% include from="E02-04_0004-ConnectionsMultilineCmd.md" element-id="E02-04_0004-ConnectionsMultilineCmd_snippet" /%}                                                     |
+| Tags                               |                                              | {% include from="E02-04_0004-ConnectionsTags.md" element-id="E02-04_0004-ConnectionsTags_snippet" /%}                                                                     |
+| **Proxy Hops**                                                                                                                                                                                                                                                   |||
+| + Add Hop                          |                                              | {% include from="E02-04_0004-ConnectionsProxyAdd.md" element-id="E02-04_0004-ConnectionsProxyAdd_snippet" /%}                                                             |
+| + Copy from Existing               |                                              | {% include from="E02-04_0004-ConnectionsProxyCopy.md" element-id="E02-04_0004-ConnectionsProxyCopy_snippet" /%}                                                           |
+</chapter> 
+
+<chapter title="Credentials Source Settings" collapsible="true" level="5">
+
+|           Settings            |      Credentials Source       |                                                                                                                                                                                                                                                                                                                                                                                                         Description                                                                                                                                                                                                                                                                                                                                                                                                         |
+|-------------------------------|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Credentials Source            |                               | Select the source used to authenticate this connection. * **PROVIDED**: When connecting from Autonomics, enter the username and password when you start a session. * **LOCKSMITH_LOOKUP**:Autonomics searches Locksmith for matching Host and other attributes for the connection. * **LOCKSMITH_ELEMENT_ID**: Autonomics searches Locksmith for the selected Locksmith Element Path attribute for the connection. * **KERBEROS**: Use Kerberos for authentication. * **HASHI_VAULT**: Use a Hashi vault for authentication. * **CYBERARK_AGENT**: Use CyberArk for authentication. Certificates should be stored in a Java Keystore on the Automata Lite instance. * **CYBERARK_REST**: Use CyberArk for authentication. Fetch credentials using the CyberArk REST API. |
+| Username                      | All                           | Type a username to override but not overwrite the username stored in IPlocksmith.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Locksmith Element Path        | LOCKSMITH_ELEMENT_ID          | Click the Choose button to use a popup to navigate to the Locksmith element. Then select the element to configure its path.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Hashi Vault Key               | HASHI_VAULT                   | Type the vault key to use for the Hashi vault.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| CyberArk Query                | CYBERARK_AGENT, CYBERARK_REST | Type a query to locate your CyberArk credentials.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| CyberArk Agent Server         | CYBERARK_AGENT                | Type the CyberArk Agent Server name used with the Endpoint Privilege Manager (EPM).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| CyberArk Agent Port           | CYBERARK_AGENT                | Type the CyberArk Agent Port number used with the Endpoint Privilege Manager (EPM).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| CyberArk AppID                | CYBERARK_AGENT, CYBERARK_REST | Type the CyberArk AppID used for this connection.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| CyberArk Host Optional        | CYBERARK_AGENT                | If needed, type an optional CyberArk host name for this connection.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| CyberArk Port Optional        | CYBERARK_AGENT                | If needed, type an optional CyberArk port to use with the optional host name.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| CyberArk Rest URL             | CYBERARK_REST                 | Type the CyberArk REST URL to use for this connection.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| CyberArk Rest Port            | CYBERARK_REST                 | Type the CyberArk REST API port to use for this connection.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| CyberArk Rest TrustStore Path | CYBERARK_REST                 | Type a TrustStore path to use for authentication with this connection.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| CyberArk Rest KeyStore Path   | CYBERARK_REST                 | Type a KeyStore path to use for authentication with this connection.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+
+</chapter>
+
+##Add Connections {% #Add %}
+
+To add Connections:
+
+1. At the top right of the Connections list workspace, click the **+ New connection** button or the **+** button. A New connection panel opens on the right side of the screen.
+2. Fill out the form to configure a connection.
+3. Click the Save (![Workflows-Btn-Save](Workflows-Btn-Save.png){width="25" style="inline"}) icon to save the new connection.
+
+##Search for Connections {% #Search %}
+
+To search for Connections:
+
+1. At the top right of the Connections list workspace, click the **Search** field.
+2. Type a partial or complete connection name in the search field.
+3. From the search results list, click a connection to display it in the right side panel.
+
+##Edit Connections {% #Edit %}
+
+To edit Connections:
+
+1. In the Connections list workspace, scroll down the list of Connections or use the search field.
+2. Once you find the connection to edit, click the connection name. The right side panel displays.
+3. Click the Edit button in the bottom left of the right side panel. The Edit connection tab workspace displays.
+4. In the Edit connection workspace, update the form to configure a connection.
+5. Click the Save (![Workflows-Btn-Save](Workflows-Btn-Save.png){width="25" style="inline"}) icon to save the connection.
+
+##Delete Connections {% #Delete %}
+
+To delete Connections:
+
+1. In the Connections list workspace, scroll down the list of Connections or use the search field.
+2. Once you find the connection to edit, click the connection name. The right side panel displays.
+3. Click the Edit button in the bottom left of the right side panel. The Edit connection tab workspace displays.
+4. Click the Delete button in the bottom left of the right side panel.
+
+##Clone Connections {% #Clone %}
+
+To clone Connections:
+
+1. In the Connections list workspace, scroll down the list of Connections or use the search field to find a connection.
+2. Once you find the connection to export, hover over the gear (![Gear-Btn-Automations_Browser](Gear-Btn-Automations_Browser.png){width="25" style="inline"}) icon to display a small menu. Click the Clone link. The Clone popup displays. 
+3. Type a new unique name in the Clone popup. Then click the Clone button. The cloned connection displays in the right panel.
+4. Click the Edit button at the bottom left of the right panel. Make changes if and as needed.
+5. Click the Save (![Workflows-Btn-Save](Workflows-Btn-Save.png){width="25" style="inline"}) icon to save the connection.
+
+##Connect with Connections {% #Connect %}
+
+To import Connections:
+
+1. At the top right of the Connections workspace, click a connection to display it in the right side panel.
+2. Click the Connect button at the bottom right the right side panel. A new tab web page displays with a Terminal interface and Command Log list.
+3. If a Connect popup appears, type any information needed to connect.
+
+## More Resources
+
+For more information, see:
+
+* [Connections Introduction](E02-04_0002-Connection-Mod-Intro.md).
+

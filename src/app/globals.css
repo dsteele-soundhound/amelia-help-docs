@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500;600&display=swap');
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+  --background: #ffffff;
+  --foreground: #1a202c;
+  --primary: #280654;
+  --primary-light: #a58bfe;
+  --sidebar-bg: #280654;
+  --sidebar-text: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-muted: #4a5568;
+}
+
+[data-theme="dark"] {
+  --background: #1a202c;
+  --foreground: #e2e8f0;
+  --sidebar-bg: #2d3748;
+  --sidebar-text: #e2e8f0;
+  --card-bg: #2d3748;
+  --border-color: #4a5568;
+  --text-muted: #a0aec0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a202c;
+    --foreground: #e2e8f0;
+    --sidebar-bg: #2d3748;
+    --sidebar-text: #e2e8f0;
+    --card-bg: #2d3748;
+    --border-color: #4a5568;
+    --text-muted: #a0aec0;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-900 hover:bg-primary-800 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-primary-400 hover:bg-primary-500 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .card {
+    @apply rounded-lg shadow-sm p-6;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+  }
+
+  [data-theme="dark"] .card {
+    background-color: #2d3748;
+  }
+  
+  .sidebar-link {
+    @apply flex items-center px-4 py-2 text-sm font-medium text-white rounded-md hover:bg-primary-800 transition-colors duration-200;
+  }
+  
+  .sidebar-link.active {
+    @apply bg-primary-800 text-white;
+  }
+  
+  .breadcrumb {
+    @apply flex items-center space-x-2 text-sm;
+    color: var(--text-muted);
+  }
+  
+  .breadcrumb-separator {
+    @apply text-primary-400;
+  }
+  
+  .include-placeholder {
+    @apply bg-primary-50 border border-primary-200 rounded-md p-4 text-primary-800 font-mono text-sm;
+  }
+  
+  .include-content {
+    @apply mb-4;
+  }
+  
+  .include-error {
+    @apply bg-red-50 border border-red-200 text-red-700 p-2 rounded text-sm font-mono;
+  }
+  
+  .prose-docs {
+    @apply prose prose-lg max-w-none text-gray-900 dark:text-gray-100 dark:prose-dark;
+    color: var(--foreground);
+  }
+  
+  .prose-docs p,
+  .prose-docs li,
+  .prose-docs span,
+  .prose-docs div {
+    color: #1a202c !important;
+  }
+
+  [data-theme="dark"] .prose-docs p,
+  [data-theme="dark"] .prose-docs li,
+  [data-theme="dark"] .prose-docs span,
+  [data-theme="dark"] .prose-docs div {
+    color: #e2e8f0 !important;
+  }
+  
+  .prose-docs h1 {
+    @apply text-primary-900 dark:text-primary-400 font-bold;
+  }
+  
+  .prose-docs h2 {
+    @apply text-primary-900 dark:text-primary-400 font-semibold pb-2;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .prose-docs h3,
+  .prose-docs h4,
+  .prose-docs h5,
+  .prose-docs h6 {
+    @apply text-primary-900 dark:text-primary-400 font-semibold;
+  }
+  
+  .prose-docs a {
+    @apply text-primary-400 hover:text-primary-500 no-underline hover:underline;
+  }
+  
+  .prose-docs code {
+    @apply text-primary-900 dark:text-primary-100 px-1 py-0.5 rounded text-sm;
+    background-color: var(--border-color);
+  }
+  
+  .prose-docs pre {
+    @apply bg-primary-900 text-primary-100;
+  }
+  
+  .prose-docs pre code {
+    @apply bg-transparent text-primary-100 p-0;
+  }
+  
+  .prose-docs blockquote {
+    @apply border-l-4 border-primary-400 pl-4 py-2;
+    background-color: #f7fafc;
+    color: var(--foreground);
+  }
+
+  [data-theme="dark"] .prose-docs blockquote {
+    background-color: #2d3748;
+  }
+  
+  .prose-docs table {
+    @apply border-collapse px-4 py-2;
+    border: 1px solid var(--border-color);
+  }
+  
+  .prose-docs th {
+    @apply bg-primary-900 text-white px-4 py-2 text-left;
+    border: 1px solid var(--border-color);
+  }
+  
+  .prose-docs td {
+    @apply px-4 py-2;
+    border: 1px solid var(--border-color);
+    color: var(--foreground);
+  }
+  
+  .prose-docs tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  [data-theme="dark"] .prose-docs tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .gradient-purple {
+    background: linear-gradient(135deg, #280654 0%, #a58bfe 100%);
+  }
+  
+  .shadow-purple {
+    box-shadow: 0 10px 25px -5px rgba(40, 6, 84, 0.1), 0 4px 6px -2px rgba(40, 6, 84, 0.05);
+  }
+}
+
+/* Theme transition animations */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 999;
+}
+
+.theme-transition-circle::view-transition-new(root) {
+  clip-path: var(--theme-transition-start);
+  animation: theme-circle-expand var(--theme-transition-duration) ease-in-out;
+}
+
+.theme-transition-circle-blur::view-transition-new(root) {
+  clip-path: var(--theme-transition-start);
+  animation: theme-circle-blur-expand var(--theme-transition-duration) ease-in-out;
+  filter: blur(20px);
+}
+
+@keyframes theme-circle-expand {
+  0% {
+    clip-path: var(--theme-transition-start);
+  }
+  100% {
+    clip-path: var(--theme-transition-end);
+  }
+}
+
+@keyframes theme-circle-blur-expand {
+  0% {
+    clip-path: var(--theme-transition-start);
+    filter: blur(20px);
+  }
+  50% {
+    filter: blur(10px);
+  }
+  100% {
+    clip-path: var(--theme-transition-end);
+    filter: blur(0px);
+  }
+}
