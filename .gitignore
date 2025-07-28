@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+lambda.js
 
 # debug
 npm-debug.log*

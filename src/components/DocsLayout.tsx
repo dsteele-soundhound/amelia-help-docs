@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import Breadcrumb from './Breadcrumb';
 import TableOfContents from './TableOfContents';
 import ThemeToggle from './ThemeToggle';
+import LogoutButton from './LogoutButton';
 import { getNavigationItems } from '@/utils/navigationGenerator';
 
 // Helper function to check if content has headings for TOC
@@ -54,7 +55,10 @@ export default async function DocsLayout({ children, breadcrumbs = [], content }
             <div className="text-lg font-semibold text-gray-900 dark:text-white">
               Documentation
             </div>
-            <ThemeToggle variant="circle" startPoint="top-right" />
+            <div className="flex items-center gap-3">
+              <ThemeToggle variant="circle" startPoint="top-right" />
+              <LogoutButton />
+            </div>
           </div>
         </header>
         <div className="max-w-4xl mx-auto p-8">
