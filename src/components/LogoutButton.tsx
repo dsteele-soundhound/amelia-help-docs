@@ -6,15 +6,14 @@ export default function LogoutButton() {
 
   const handleLogout = async () => {
     try {
-      // Note: We'll rely on cookie clearing and Lambda@Edge logout marker
-      // Server-side token revocation can be handled by the auth app if needed
-
+      console.log('Logout initiated - clearing cookies and setting logout marker');
+      
       // Clear all authentication cookies (multiple variations to be thorough)
       const cookieSettings = [
-        'Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax',
-        'Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax',
-        'Path=/; Domain=help.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax',
-        'Path=/; Domain=.help.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax'
+        'Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+        'Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+        'Path=/; Domain=help.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+        'Path=/; Domain=.help.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
       ];
 
       const cookieNames = ['cognito_id_token', 'cognito_access_token', 'cognito_refresh_token'];
@@ -25,12 +24,23 @@ export default function LogoutButton() {
         });
       });
 
-      // Add a logout marker to prevent immediate re-login (try multiple domain variations)
-      document.cookie = 'logout_initiated=true; Path=/; Domain=.dev.amelia.com; Max-Age=60; Secure; SameSite=Lax';
-      document.cookie = 'logout_initiated=true; Path=/; Max-Age=60; Secure; SameSite=Lax';
+      // Set logout marker with multiple variations to ensure Lambda@Edge detects it
+      const logoutMarkerSettings = [
+        'Path=/; Domain=.dev.amelia.com; Max-Age=120',
+        'Path=/; Max-Age=120',
+        'Path=/; Domain=help.dev.amelia.com; Max-Age=120'
+      ];
       
-      // Redirect directly to login page - token revocation already handled the server-side cleanup
-      window.location.href = 'https://help.dev.amelia.com/login';
+      logoutMarkerSettings.forEach(settings => {
+        document.cookie = `logout_initiated=true; ${settings}`;
+      });
+      
+      console.log('Cookies cleared and logout marker set, redirecting...');
+      
+      // Add a small delay to ensure cookies are set before redirect
+      setTimeout(() => {
+        window.location.href = 'https://help.dev.amelia.com/login';
+      }, 100);
       
     } catch (error) {
       console.error('Logout failed:', error);
@@ -39,8 +49,11 @@ export default function LogoutButton() {
       document.cookie = 'cognito_id_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'cognito_access_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'cognito_refresh_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'logout_initiated=true; Path=/; Max-Age=120';
       
-      window.location.href = '/login?force_logout=1';
+      setTimeout(() => {
+        window.location.href = '/login?force_logout=1';
+      }, 100);
     }
   }
 
