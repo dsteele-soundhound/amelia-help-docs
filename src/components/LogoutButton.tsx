@@ -14,31 +14,8 @@ export default function LogoutButton() {
         return null;
       };
 
-      const accessToken = getCookie('cognito_access_token');
-      const refreshToken = getCookie('cognito_refresh_token');
-      
-      // Revoke tokens on Cognito to invalidate the session
-      const tokensToRevoke = [];
-      if (refreshToken) tokensToRevoke.push(refreshToken); // Refresh token revocation invalidates all tokens
-      if (accessToken) tokensToRevoke.push(accessToken);
-      
-      for (const token of tokensToRevoke) {
-        try {
-          await fetch('https://help-amelia-auth.auth.us-east-2.amazoncognito.com/oauth2/revoke', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-              token: token,
-              client_id: '52vp9uqd86bdkvid3il5vumv03'
-            })
-          });
-        } catch (revokeError) {
-          console.warn('Token revocation failed:', revokeError);
-          // Continue with logout even if revocation fails
-        }
-      }
+      // Note: We'll rely on cookie clearing and Lambda@Edge logout marker
+      // Server-side token revocation can be handled by the auth app if needed
 
       // Clear all authentication cookies (multiple variations to be thorough)
       const cookieSettings = [
@@ -56,8 +33,9 @@ export default function LogoutButton() {
         });
       });
 
-      // Add a logout marker to prevent immediate re-login
-      document.cookie = 'logout_initiated=true; Path=/; Domain=.dev.amelia.com; Max-Age=30; Secure; SameSite=Lax';
+      // Add a logout marker to prevent immediate re-login (try multiple domain variations)
+      document.cookie = 'logout_initiated=true; Path=/; Domain=.dev.amelia.com; Max-Age=60; Secure; SameSite=Lax';
+      document.cookie = 'logout_initiated=true; Path=/; Max-Age=60; Secure; SameSite=Lax';
       
       // Redirect directly to login page - token revocation already handled the server-side cleanup
       window.location.href = 'https://help.dev.amelia.com/login';
