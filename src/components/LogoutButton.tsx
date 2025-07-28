@@ -15,9 +15,14 @@ export default function LogoutButton() {
       };
 
       const accessToken = getCookie('cognito_access_token');
+      const refreshToken = getCookie('cognito_refresh_token');
       
-      // Revoke the session on Cognito if we have an access token
-      if (accessToken) {
+      // Revoke tokens on Cognito to invalidate the session
+      const tokensToRevoke = [];
+      if (refreshToken) tokensToRevoke.push(refreshToken); // Refresh token revocation invalidates all tokens
+      if (accessToken) tokensToRevoke.push(accessToken);
+      
+      for (const token of tokensToRevoke) {
         try {
           await fetch('https://help-amelia-auth.auth.us-east-2.amazoncognito.com/oauth2/revoke', {
             method: 'POST',
@@ -25,7 +30,7 @@ export default function LogoutButton() {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-              token: accessToken,
+              token: token,
               client_id: '52vp9uqd86bdkvid3il5vumv03'
             })
           });
@@ -54,10 +59,8 @@ export default function LogoutButton() {
       // Add a logout marker to prevent immediate re-login
       document.cookie = 'logout_initiated=true; Path=/; Domain=.dev.amelia.com; Max-Age=30; Secure; SameSite=Lax';
       
-      // Redirect to Cognito logout URL to completely terminate the session
-      const cognitoLogoutUrl = `https://help-amelia-auth.auth.us-east-2.amazoncognito.com/logout?client_id=52vp9uqd86bdkvid3il5vumv03&logout_uri=${encodeURIComponent('https://help.dev.amelia.com/login')}`;
-      
-      window.location.href = cognitoLogoutUrl;
+      // Redirect directly to login page - token revocation already handled the server-side cleanup
+      window.location.href = 'https://help.dev.amelia.com/login';
       
     } catch (error) {
       console.error('Logout failed:', error);
