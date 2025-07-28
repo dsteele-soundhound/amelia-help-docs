@@ -1,24 +1,14 @@
 'use client'
 
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline"
-import { signOut } from 'aws-amplify/auth'
 
 export default function LogoutButton() {
 
   const handleLogout = async () => {
     try {
-      console.log('Logout initiated - signing out from Amplify and clearing cookies');
+      console.log('Logout initiated - redirecting to auth app for proper session termination');
       
-      // Step 1: Sign out from Amplify to end the session
-      try {
-        await signOut();
-        console.log('✅ Amplify signOut completed');
-      } catch (amplifyError) {
-        console.warn('⚠️ Amplify signOut failed:', amplifyError);
-        // Continue with manual cleanup
-      }
-      
-      // Step 2: Clear all authentication cookies (belt and suspenders approach)
+      // Step 1: Clear all authentication cookies from docs app side
       const cookieSettings = [
         'Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
         'Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
@@ -34,7 +24,7 @@ export default function LogoutButton() {
         });
       });
 
-      // Step 3: Set logout marker to ensure Lambda@Edge blocks any remaining requests
+      // Step 2: Set logout marker to ensure Lambda@Edge blocks any remaining requests
       const logoutMarkerSettings = [
         'Path=/; Domain=.dev.amelia.com; Max-Age=120',
         'Path=/; Max-Age=120',
@@ -45,12 +35,11 @@ export default function LogoutButton() {
         document.cookie = `logout_initiated=true; ${settings}`;
       });
       
-      console.log('✅ Amplify session ended, cookies cleared, logout marker set');
+      console.log('✅ Cookies cleared and logout marker set');
       
-      // Step 4: Redirect to login page
-      setTimeout(() => {
-        window.location.href = 'https://help.dev.amelia.com/login';
-      }, 200);
+      // Step 3: Redirect to auth app logout endpoint which will handle Amplify signOut
+      // The auth app should handle the session termination and redirect back to login
+      window.location.href = 'https://help.dev.amelia.com/auth/logout?return_url=' + encodeURIComponent('https://help.dev.amelia.com/login');
       
     } catch (error) {
       console.error('Logout failed:', error);
