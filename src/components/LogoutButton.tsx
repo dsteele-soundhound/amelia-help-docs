@@ -6,22 +6,68 @@ export default function LogoutButton() {
 
   const handleLogout = async () => {
     try {
-      // Clear all authentication cookies
-      document.cookie = 'cognito_id_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
-      document.cookie = 'cognito_access_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
-      document.cookie = 'cognito_refresh_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+      // Get current access token for revocation
+      const getCookie = (name: string) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()?.split(';').shift();
+        return null;
+      };
+
+      const accessToken = getCookie('cognito_access_token');
       
-      // Also clear for the current domain in case there are any
-      document.cookie = 'cognito_id_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
-      document.cookie = 'cognito_access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
-      document.cookie = 'cognito_refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+      // Revoke the session on Cognito if we have an access token
+      if (accessToken) {
+        try {
+          await fetch('https://help-amelia-auth.auth.us-east-2.amazoncognito.com/oauth2/revoke', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              token: accessToken,
+              client_id: '52vp9uqd86bdkvid3il5vumv03'
+            })
+          });
+        } catch (revokeError) {
+          console.warn('Token revocation failed:', revokeError);
+          // Continue with logout even if revocation fails
+        }
+      }
+
+      // Clear all authentication cookies (multiple variations to be thorough)
+      const cookieSettings = [
+        'Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax',
+        'Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax',
+        'Path=/; Domain=help.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax',
+        'Path=/; Domain=.help.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; SameSite=Lax'
+      ];
+
+      const cookieNames = ['cognito_id_token', 'cognito_access_token', 'cognito_refresh_token'];
       
-      // Redirect to logout page or refresh to trigger Lambda@Edge authentication
-      window.location.href = '/login'
+      cookieNames.forEach(cookieName => {
+        cookieSettings.forEach(settings => {
+          document.cookie = `${cookieName}=; ${settings}`;
+        });
+      });
+
+      // Add a logout marker to prevent immediate re-login
+      document.cookie = 'logout_initiated=true; Path=/; Domain=.dev.amelia.com; Max-Age=30; Secure; SameSite=Lax';
+      
+      // Redirect to Cognito logout URL to completely terminate the session
+      const cognitoLogoutUrl = `https://help-amelia-auth.auth.us-east-2.amazoncognito.com/logout?client_id=52vp9uqd86bdkvid3il5vumv03&logout_uri=${encodeURIComponent('https://help.dev.amelia.com/login')}`;
+      
+      window.location.href = cognitoLogoutUrl;
+      
     } catch (error) {
-      console.error('Logout failed:', error)
-      // Fallback: just refresh the page to trigger authentication
-      window.location.reload()
+      console.error('Logout failed:', error);
+      
+      // Fallback: clear cookies and force reload
+      document.cookie = 'cognito_id_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'cognito_access_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'cognito_refresh_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      
+      window.location.href = '/login?force_logout=1';
     }
   }
 
