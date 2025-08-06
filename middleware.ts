@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   // Only skip auth checks for specific auth endpoints
   if (request.nextUrl.pathname.startsWith('/auth/logout') || 
-      request.nextUrl.pathname.startsWith('/auth/login') ||
+      request.nextUrl.pathname.startsWith('/login') ||
       request.nextUrl.pathname.startsWith('/set-auth-cookies')) {
     console.log('🔄 Middleware: Allowing auth endpoint:', request.nextUrl.pathname);
     return NextResponse.next();
@@ -33,13 +33,15 @@ export function middleware(request: NextRequest) {
   }
   
   console.log('✅ Middleware: Auth check passed, allowing request');
-  // Allow the request to proceed with cache-busting headers to prevent CloudFront caching
+  // Allow the request to proceed with aggressive cache-busting headers
   const response = NextResponse.next();
   
-  // Add cache-busting headers to prevent CloudFront from caching authenticated content
-  response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, private');
+  // Add aggressive cache-busting headers to prevent all forms of caching
+  response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, private, max-age=0');
   response.headers.set('Pragma', 'no-cache');
-  response.headers.set('Expires', '0');
+  response.headers.set('Expires', 'Thu, 01 Jan 1970 00:00:00 GMT');
+  response.headers.set('Vary', 'Cookie');
+  response.headers.set('ETag', `"auth-${Date.now()}"`);
   
   return response;
 }
