@@ -41,16 +41,18 @@ export default function LogoutButton() {
       
       console.log('✅ Logout markers set and cookies cleared');
       
-      // Step 3: Force immediate page reload to trigger middleware
-      console.log('🔄 Forcing page reload to trigger authentication check');
-      window.location.reload();
+      // Step 3: Redirect to auth app logout endpoint to properly terminate Amplify session
+      console.log('🔄 Redirecting to auth app to terminate Amplify session');
+      window.location.href = 'https://help.dev.amelia.com/auth/logout?force=true&return_url=' + 
+        encodeURIComponent('https://help.dev.amelia.com/auth/login?logged_out=true');
       
     } catch (error) {
       console.error('❌ Logout failed:', error);
       
-      // Fallback: Set logout marker and reload
+      // Fallback: Set logout marker and redirect to auth logout
       document.cookie = 'logout_initiated=true; Path=/; Max-Age=300';
-      window.location.reload();
+      window.location.href = 'https://help.dev.amelia.com/auth/logout?force=true&return_url=' + 
+        encodeURIComponent('https://help.dev.amelia.com/auth/login?logged_out=true&error=fallback');
     }
   }
 

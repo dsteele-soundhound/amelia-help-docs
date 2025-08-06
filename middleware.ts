@@ -2,6 +2,12 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  // Skip auth checks if we're being redirected to the auth app for logout
+  if (request.url.includes('help.dev.amelia.com/auth/logout')) {
+    console.log('🔄 Middleware: Allowing auth logout redirect');
+    return NextResponse.next();
+  }
+  
   // Debug: Log all cookies to understand what's available
   const allCookies = request.cookies.getAll();
   console.log('🍪 Middleware: All cookies:', allCookies.map(c => `${c.name}=${c.value}`));
