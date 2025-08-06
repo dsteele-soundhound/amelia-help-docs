@@ -6,12 +6,26 @@ export default function LogoutButton() {
 
   const handleLogout = async () => {
     try {
-      console.log('Logout initiated - redirecting to auth app for proper session termination');
+      console.log('🔐 Logout initiated - clearing all cookies and markers');
       
-      // Step 1: Clear all authentication cookies from docs app side
+      // Step 1: Set logout marker FIRST to immediately trigger middleware
+      const logoutMarkerSettings = [
+        'Path=/; Max-Age=300', // 5 minutes
+        'Path=/; Domain=.dev.amelia.com; Max-Age=300',
+        'Path=/; Domain=help.dev.amelia.com; Max-Age=300',
+        'Path=/; Domain=.help.dev.amelia.com; Max-Age=300'
+      ];
+      
+      logoutMarkerSettings.forEach(settings => {
+        document.cookie = `logout_initiated=true; ${settings}`;
+        console.log(`🍪 Setting logout marker: logout_initiated=true; ${settings}`);
+      });
+
+      // Step 2: Clear all authentication cookies more comprehensively  
       const cookieSettings = [
+        'Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT', // Root path, no domain
+        'Path=/; Domain=' + window.location.hostname + '; Expires=Thu, 01 Jan 1970 00:00:00 GMT', // Current domain
         'Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
-        'Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
         'Path=/; Domain=help.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
         'Path=/; Domain=.help.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
       ];
@@ -21,38 +35,22 @@ export default function LogoutButton() {
       cookieNames.forEach(cookieName => {
         cookieSettings.forEach(settings => {
           document.cookie = `${cookieName}=; ${settings}`;
+          console.log(`🍪 Clearing: ${cookieName}=; ${settings}`);
         });
       });
-
-      // Step 2: Set logout marker to ensure Lambda@Edge blocks any remaining requests
-      const logoutMarkerSettings = [
-        'Path=/; Domain=.dev.amelia.com; Max-Age=120',
-        'Path=/; Max-Age=120',
-        'Path=/; Domain=help.dev.amelia.com; Max-Age=120'
-      ];
       
-      logoutMarkerSettings.forEach(settings => {
-        document.cookie = `logout_initiated=true; ${settings}`;
-      });
+      console.log('✅ Logout markers set and cookies cleared');
       
-      console.log('✅ Cookies cleared and logout marker set');
-      
-      // Step 3: Redirect to auth app logout endpoint which will handle Amplify signOut
-      // The auth app should handle the session termination and redirect back to login
-      window.location.href = 'https://help.dev.amelia.com/auth/logout?return_url=' + encodeURIComponent('https://help.dev.amelia.com/login');
+      // Step 3: Force immediate page reload to trigger middleware
+      console.log('🔄 Forcing page reload to trigger authentication check');
+      window.location.reload();
       
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error('❌ Logout failed:', error);
       
-      // Fallback: clear cookies and force reload
-      document.cookie = 'cognito_id_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'cognito_access_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'cognito_refresh_token=; Path=/; Domain=.dev.amelia.com; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'logout_initiated=true; Path=/; Max-Age=120';
-      
-      setTimeout(() => {
-        window.location.href = '/login?force_logout=1';
-      }, 100);
+      // Fallback: Set logout marker and reload
+      document.cookie = 'logout_initiated=true; Path=/; Max-Age=300';
+      window.location.reload();
     }
   }
 
