@@ -14,49 +14,22 @@ export function middleware(request: NextRequest) {
   const allCookies = request.cookies.getAll();
   console.log('🍪 Middleware: All cookies:', allCookies.map(c => `${c.name}=${c.value}`));
   
-  // Check if user has been marked as logged out
-  const logoutInitiated = request.cookies.get('logout_initiated');
-  
-  // Check for authentication tokens
+  // Check for authentication tokens (Lambda@Edge handles logout_initiated)
   const cognitoIdToken = request.cookies.get('cognito_id_token');
   const cognitoAccessToken = request.cookies.get('cognito_access_token');
   
   console.log('🔍 Middleware check:', {
     url: request.url,
-    logoutInitiated: logoutInitiated?.value,
     hasIdToken: !!cognitoIdToken,
     hasAccessToken: !!cognitoAccessToken,
   });
   
-  // If logout was initiated, redirect to login
-  if (logoutInitiated && logoutInitiated.value === 'true') {
-    console.log('🔒 Middleware: Logout initiated - redirecting to login');
-    const loginUrl = new URL('https://help.dev.amelia.com/auth/login');
-    loginUrl.searchParams.set('return_url', request.url);
-    loginUrl.searchParams.set('logout', 'true'); // Add logout flag
-    const response = NextResponse.redirect(loginUrl);
-    
-    // Add cache-busting headers to prevent CloudFront caching
-    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, private');
-    response.headers.set('Pragma', 'no-cache');
-    response.headers.set('Expires', '0');
-    
-    return response;
-  }
-  
-  // If no authentication tokens, redirect to login
+  // Lambda@Edge handles logout detection and initial auth redirects
+  // Next.js middleware only adds security headers for authenticated content
   if (!cognitoIdToken || !cognitoAccessToken) {
-    console.log('🔒 Middleware: No auth tokens - redirecting to login');
-    const loginUrl = new URL('https://help.dev.amelia.com/auth/login');
-    loginUrl.searchParams.set('return_url', request.url);
-    const response = NextResponse.redirect(loginUrl);
-    
-    // Add cache-busting headers to prevent CloudFront caching
-    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, private');
-    response.headers.set('Pragma', 'no-cache');
-    response.headers.set('Expires', '0');
-    
-    return response;
+    console.log('🔒 Middleware: No auth tokens (Lambda@Edge should handle redirect)');
+    // Don't redirect here - let Lambda@Edge handle it to avoid conflicts
+    return NextResponse.next();
   }
   
   console.log('✅ Middleware: Auth check passed, allowing request');
